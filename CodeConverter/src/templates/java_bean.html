@@ -1,0 +1,24 @@
+package {{classBean.package}};
+
+{% if classBean.import_classes %}
+{% for class in classBean.import_classes %}
+import {{class}};
+{% endfor %}
+{% endif %}
+
+public class {{ classBean.name }}
+{
+	{% for property in classBean.property %}
+	private {{property.pType}} {{property.name}};
+	{% endfor %}
+	
+	{% for property in classBean.property %}
+	public void set{{property.capName}}({{property.pType}} {{property.name}}){
+		this.{{property.name}}={{property.name}};
+	}
+	
+	public {{property.pType}} get{{property.capName}}(){
+		return {{property.name}};
+	}
+	{% endfor %}
+}

@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/bean/database.py=utf-8
+encoding//src/bean/entitys.py=utf-8
+encoding//src/bean/java_project.py=utf-8
+encoding//src/dao/database.py=utf-8
+encoding//src/util/beanUtil.py=utf-8
+encoding//src/util/codeUtil.py=utf-8
+encoding//src/util/connectionUtil.py=utf-8
+encoding//src/util/sqlUtil.py=utf-8
