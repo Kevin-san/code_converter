@@ -7,9 +7,9 @@ Created on 2018年1月3日
 from util.beanUtil import beanUtil
 
 class Property(object):
-    def __init__(self,isStatic=False,name,pType):
+    def __init__(self,isStatic,name,pType):
         self.isStatic=isStatic
-        self.name=name
+        self.name=beanUtil.convertToProperty(name)
         self.capName=beanUtil.toFirstUpperCase(beanUtil.convertToProperty(name))
         self.pType=pType
     
@@ -37,7 +37,7 @@ class Property(object):
     
 class Method(object):
     
-    def __init__(self,is_static,ret_type,m_name,parameters=[],m_comment):
+    def __init__(self,is_static,ret_type,m_name,m_comment,parameters=[]):
         self.is_static=is_static
         self.ret_type=ret_type
         self.name=m_name

@@ -8,7 +8,7 @@ import os
 import sys,getopt
 import zipfile
 import logging
-
+import jinja2
 
 default=u"F:\\code"
 logging.getLogger("util.codeUtil")
@@ -54,7 +54,11 @@ class CodeUtil(object):
         print(dir)
         return dir
     
-        
+    def template(self,tempname,data):
+        TemplateLoader=jinja2.FileSystemLoader(searchpath='/templates')
+        TemplateEnv=jinja2.Environment(loader=TemplateLoader)
+        template=TemplateEnv.get_template(tempname)
+        return template.render(data)
     
     def createJavaProject(self,project):
         proj_name=project.get_name()
@@ -109,15 +113,5 @@ class CodeUtil(object):
                     return arg
         return None
 
-if __name__=="__main__":
-    from bean.java_project import JProject,Source,Lib,Config
-    packages=["com.bean","com.dao","com.service","com.web","com.util"]
-    src=Source("src",packages)
-    lib=Lib("lib",[])
-    config=Config("conf",[])
-    project=JProject("python",[src],[lib],[config])
-    util=CodeUtil()
-    util.createJavaProject(project)
-    util.rmfiles(default)
-    util.mkdirs(default)
+codeUtil=CodeUtil()
     

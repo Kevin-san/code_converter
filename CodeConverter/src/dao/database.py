@@ -8,7 +8,7 @@ Created on 2018年1月3日
 from java.sql import *
 from util.sqlUtil import sqlUtil
 from bean.database import Column,Table,Procedure
-
+from bean.java_project import Class
 
 class Database(object):
     '''
@@ -26,7 +26,7 @@ class Database(object):
         rsmd=pst.getMetaData()
         length=rsmd.getColumnCount()
         columns=[]
-        for index in xrange(0,length):
+        for index in range(0,length):
             name = rsmd.getColumnName(index+1)
             cType = rsmd.getColumnTypeName(index+1)
             column=Column(cType,name)
@@ -69,12 +69,30 @@ class Database(object):
 
 if __name__=="__main__":
     from util.connectionUtil import connectionUtil
+    from bean.entitys import Property
+    from util.beanUtil import beanUtil
+    from util.codeUtil import codeUtil
     conn=connectionUtil.getConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/test", "root", "root")
     db=Database()
     proc=db.getProcedure(conn, 'test', 'test_proc')
     table=db.getTable(conn, 'columns', 'pet')
-    tables=db.getTables(conn, 'columns')
-    procs=db.getProcedures(conn, 'test')
+    properties=[]
+    classes=set()
+    c_name=beanUtil.toFirstUpperCase(beanUtil.convertToProperty(table.get_name()))
+    for item in table.get_columns():
+        p_name=item.get_name()
+        c_type=item.get_cType()
+        c_types=c_type.split('.')
+        type=c_type
+        if len(c_types)>1:
+            classes.add(c_type)
+            type=c_types[len(c_types)-1]
+        prop=Property(False,p_name,type)
+        properties.append(prop)
+    bean=Class(c_name,'com.entity',classes,'',{},properties)
+    data={"classBean":bean}
+    str=codeUtil.template("java_bean.html", data)
+    print(str)
     
     
     

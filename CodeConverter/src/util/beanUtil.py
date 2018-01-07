@@ -11,7 +11,7 @@ wordPattern = re.compile(r'[a-z]+')
 class BeanUtil(object):
 
 
-    def __init__(self, params):
+    def __init__(self):
         '''
         Constructor
         '''

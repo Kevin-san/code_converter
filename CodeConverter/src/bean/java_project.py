@@ -38,7 +38,7 @@ class JProject(object):
         
 
 class Class(object):
-    def __init__(self,c_name,p_name,import_classes=[],extend='',implements_classes=[],properties=[],methods=[]):
+    def __init__(self,c_name,p_name,import_classes={},extend='',implements_classes={},properties=[],methods=[]):
         self.name=c_name
         self.package=p_name
         self.import_classes=import_classes
@@ -46,7 +46,6 @@ class Class(object):
         self.implements_classes=implements_classes
         self.properties=properties
         self.methods=methods
-        
     def set_name(self,new_name):
         self.name=new_name
         
