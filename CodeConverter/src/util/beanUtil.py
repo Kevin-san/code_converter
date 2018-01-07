@@ -18,7 +18,7 @@ class BeanUtil(object):
     def convertToProperty(self,str):
         list=pattern.split(str)
         first = list[0]
-        m = wordPattern.match(property)
+        m = wordPattern.match(first)
         if len(list)==1 and m:
             property=first[:1].lower() + first[1:]
             return property

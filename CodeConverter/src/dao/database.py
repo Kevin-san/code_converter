@@ -68,6 +68,8 @@ class Database(object):
         return procedures
 
 if __name__=="__main__":
+    import sys
+    print(sys.path)
     from util.connectionUtil import connectionUtil
     from bean.entitys import Property
     from util.beanUtil import beanUtil

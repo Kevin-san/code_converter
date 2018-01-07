@@ -8,11 +8,11 @@ import {{class}};
 
 public class {{ classBean.name }}
 {
-	{% for property in classBean.property %}
+	{% for property in classBean.properties %}
 	private {{property.pType}} {{property.name}};
 	{% endfor %}
 	
-	{% for property in classBean.property %}
+	{% for property in classBean.properties %}
 	public void set{{property.capName}}({{property.pType}} {{property.name}}){
 		this.{{property.name}}={{property.name}};
 	}
