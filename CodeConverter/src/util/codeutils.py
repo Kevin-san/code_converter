@@ -7,51 +7,72 @@ Created on 2018年1月3日
 import os
 import sys,getopt
 import zipfile
-import logging
 import jinja2
+import re
+from com.ziclix.python.sql import procedure
 
 default=u"F:\\code"
-logging.getLogger("util.codeUtil")
-class CodeUtil(object):
-    '''
-    classdocs
-    '''
+pattern=re.compile(r'[\s_+]+')
+wordPattern = re.compile(r'[a-z]+')
 
+class CodeUtils(object):
+    
+    def delete_last_char(self,str):
+        str_list=list(str)
+        str_list.pop()
+        return "".join(str_list)
+    
+    def convert2property(self,str):
+        list=pattern.split(str)
+        first = list[0]
+        m = wordPattern.search(first)
+        if m:
+            property=self.to_first_lower(first)
+        else:
+            property=first.lower()
+        if len(list)==1:
+            return property
+        for index in (1,len(list)):
+            property+=(self.to_first_upper_other_lower(list[index]))
+        return property
+    
+    def to_first_lower(self,str):
+        return str[:1].lower() + str[1:]
+        
+    def to_first_upper_other_lower(self,str):
+        result = str.lower()
+        return result.capitalize()
+    
+    def write_file(self,filename,input_string):
+        f= open(filename,'w')
+        f.write(input_string)
+        f.close()
 
-    def __init__(self):
-        '''
-        Constructor
-        '''
-    def writeFile(self,filename,inputString):
-        with open(filename,'w') as f:
-            f.write(inputString)
-
-    def zipFile(self,zipname,parentdir):
-        zip = zipfile.ZipFile('%s.zip'%(zipname),'w')
+    def zip_file(self,zipname,parentdir):
+        f_zip = zipfile.ZipFile('%s.zip'%(zipname),'w')
         for current_path, subfolders, filesname in os.walk(r'%s'%(parentdir)):
             new_path = current_path.replace(parentdir,zipname)
             for file in filesname:
-                zip.write(os.path.join(current_path, file),os.path.join(new_path,file))
-        zip.close()
+                f_zip.write(os.path.join(current_path, file),os.path.join(new_path,file))
+        f_zip.close()
         
-    def loadProperty(self,filename):
+    def load_property(self,filename):
         values={}
         with open(filename) as f:
             for line in f.readlines():
                 list=line.split('=',2)
-                allList = line.split('=')
-                if len(allList) >2:
-                    result='='*(len(allList)-2)
+                all_list = line.split('=')
+                if len(all_list) >2:
+                    result='='*(len(all_list)-2)
                     list[1]+=result
                 values[list[0]]=list[1]
         return values
     
-    def convertPackageToDirectory(self,package):
+    def convert_package2directory(self,package):
         list=package.split(".")
         dir=package
         if len(list)>1:
             dir=package.replace(".","/")
-        print(dir)
         return dir
     
     def template(self,tempname,data):
@@ -60,7 +81,7 @@ class CodeUtil(object):
         template=TemplateEnv.get_template(tempname)
         return template.render(data)
     
-    def createJavaProject(self,project):
+    def create_java(self,project):
         proj_name=project.get_name()
         srcs=project.get_srcs()
         libs=project.get_libs()
@@ -86,25 +107,18 @@ class CodeUtil(object):
     
     def rmfiles(self,path):
         if os.path.isfile(path):
-            try:
-                os.remove(path)
-            except IOError:
-                logging.error(u"IOError")
+            os.remove(path)
         elif os.path.isdir(path):
             for item in os.listdir(path):
                 itempath=os.path.join(path,item)
                 self.rmfiles(itempath)
-            try:
-                os.rmdir(path)
-            except IOError:
-                logging.error(u"IOError")
-                
+                os.rmdir(path)      
     def mkdir(self):
         os.mkdir(default)
                    
-    def getOpt(self,option,optionComment):
+    def get_opt(self,option,option_comment):
         try:
-            opts,args = getopt.getopt(sys.argv[1:],'%s:'%(option),optionComment)
+            opts,args = getopt.getopt(sys.argv[1:],'%s:'%(option),option_comment)
         except getopt.GetoptError as err:
             print(err)  # will print something like "option -a not recognized"
             sys.exit(2)
@@ -113,5 +127,19 @@ class CodeUtil(object):
                     return arg
         return None
 
-codeUtil=CodeUtil()
+class SqlUtil(object):
+    
+    def get_my_sql(self,database,table):
+        return u'select * from %s.%s'%(database,table)
+    
+    def get_sy_sql(self,database,table):
+        return u'select * from %s..%s'%(database,table)
+    
+    def get_my_procedure_comment(self,database,procedure):
+        return u"select body from mysql.proc where db='%s' and name='%s' and type='PROCEDURE'"%(database,procedure)
+    
+    def get_sy_procedure_comment(self,database,procedure):
+        return u"select text %s.dbo.syscomments WHERE id = ( SELECT id FROM %s.dbo.sysobjects WHERE name = '%s');"%(database,database,procedure)
+sqlutil=SqlUtil()
+codeutil=CodeUtils()
     

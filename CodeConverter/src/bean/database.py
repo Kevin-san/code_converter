@@ -24,18 +24,18 @@ sTypes={"CHAR":"String","VARCHAR":"String","VARCHAR2":"String",
 
 class Column(object):
     
-    def __init__(self, cType,name):
-        if type(cType) is int:
-            self._cType=types[cType]
+    def __init__(self, c_type,name):
+        if type(c_type) is int:
+            self._c_type=types[c_type]
         else:
-            self._cType=sTypes[cType]
+            self._c_type=sTypes[c_type]
         self._name=name
         
-    def set_cType(self,new_cType):
-        self._cType=new_cType
+    def set_c_type(self,new_c_type):
+        self._c_type=new_c_type
     
-    def get_cType(self):
-        return self._cType
+    def get_c_type(self):
+        return self._c_type
     
     def set_name(self,new_name):
         self._name=new_name
@@ -70,23 +70,24 @@ class Table(object):
         
 class Procedure(object):
     
-    def __init__(self,database,name,inColumns=[],outColumns=[]):
+    def __init__(self,database,name,in_columns=[],comment):
         self._database=database
         self._name=name
-        self._inColumns=inColumns
-        self._outColumns=outColumns
+        self._in_columns=in_columns
+        self._comment=comment
+        self._out_columns=[]
         
-    def set_inColumns(self,new_inColumns):
-        self._inColumns=new_inColumns
+    def set_in_columns(self,new_in_columns):
+        self._in_columns=new_in_columns
         
-    def get_inColumns(self):
-        return self._inColumns
+    def get_in_columns(self):
+        return self._in_columns
     
-    def set_outColumns(self,new_outColumns):
-        self._outColumns=new_outColumns
+    def set_out_columns(self,new_out_columns):
+        self._out_columns=new_out_columns
         
-    def get_outColumns(self):
-        return self._outColumns
+    def get_out_columns(self):
+        return self._out_columns
     
     def set_database(self,new_database):
         self._database=new_database
@@ -99,5 +100,3 @@ class Procedure(object):
         
     def get_name(self):
         return self._name
-
-           

@@ -7,33 +7,33 @@ Created on 2018年1月3日
 from util.beanUtil import beanUtil
 
 class Property(object):
-    def __init__(self,isStatic,name,pType):
-        self.isStatic=isStatic
+    def __init__(self,is_static,name,p_type):
+        self.is_static=is_static
         self.name=beanUtil.convertToProperty(name)
-        self.capName=beanUtil.toFirstUpperCase(beanUtil.convertToProperty(name))
-        self.pType=pType
+        self.cap_name=beanUtil.toFirstUpperCase(beanUtil.convertToProperty(name))
+        self.p_type=p_type
     
-    def set_pType(self,new_pType):
-        self.pType=new_pType
+    def set_p_type(self,new_p_type):
+        self.p_type=new_p_type
         
-    def get_pType(self):
-        return self.pType
+    def get_p_type(self):
+        return self.p_type
     
     def set_name(self,new_name):
         self.name=new_name
-        self.capName=beanUtil.toFirstUpperCase(beanUtil.convertToProperty(new_name))
+        self.cap_name=beanUtil.toFirstUpperCase(beanUtil.convertToProperty(new_name))
         
     def get_name(self):
         return self.name
     
-    def get_capName(self):
-        return self.capName
+    def get_cap_name(self):
+        return self.cap_name
     
-    def set_isStatic(self,new_isStatic):
-        self.isStatic=new_isStatic
+    def set_is_static(self,new_is_static):
+        self.is_static=new_is_static
         
-    def get_isStatic(self):
-        return self.isStatic
+    def get_is_static(self):
+        return self.is_static
     
 class Method(object):
     

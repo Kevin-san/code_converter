@@ -9,14 +9,8 @@ from java.lang import Class
 import java.lang.Exception
 
 import logging
-logging.getLogger("util.connectionUtil")
 
-class ConnectionUtil(object):
-
-    def __init__(self):
-       '''
-       constructors
-       ''' 
+class Connection(object):
         
     def getConnection(self,driver,url,user,password):
         try:
@@ -37,4 +31,4 @@ class ConnectionUtil(object):
     def closeResultSet(self,rst):
         if rst is not None:
             rst.close()
-connectionUtil=ConnectionUtil()  
+connectionUtil=Connection()  
