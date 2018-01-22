@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-'''
-Created on 2018年1月3日
+#!/usr/local/jython2.7/bin/jython
 
-@author: xcKev
-'''
+# -*- coding: utf-8 -*-
+
 
 class JProject(object):
     def __init__(self, name,srcs=[],libs=[],configs=[]):
@@ -139,6 +137,3 @@ class Config(object):
         
     def get_configurations(self):
         return self._configurations
-    
-        
-        
