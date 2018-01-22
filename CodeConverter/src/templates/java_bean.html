@@ -6,11 +6,11 @@ import {{class}};
 {% endfor %}
 {% endif %}
 
-public class {{ classBean.name }}
-{
+public class {{ classBean.name }}{
 	{% for property in classBean.properties %}
 	private {{property.p_type}} {{property.name}};
 	{% endfor %}
+	
 	{% for property in classBean.properties %}
 	public void set{{property.cap_name}}({{property.p_type}} {{property.name}}){
 		this.{{property.name}}={{property.name}};
@@ -20,4 +20,5 @@ public class {{ classBean.name }}
 		return {{property.name}};
 	}
 	{% endfor %}
+	
 }
