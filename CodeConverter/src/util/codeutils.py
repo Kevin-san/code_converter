@@ -88,7 +88,10 @@ class CodeUtils(object):
 	
 	def get_procedure_comment_sql(self,database,procedure):
 		return u"select text from %s.dbo.syscomments where id=(select id from %s.dbo.sysobjects where name='%s')"%(database,database,procedure)
-		
+	
+	def get_my_procedure_comment(self,database,procedure):
+		return u"select body from mysql.proc where db='%s' and name='%s' and type='PROCEDURE'"%(database,procedure)
+	
 	def create_where_sql(self,params):
 		str=' where 1=1'
 		for param in params:
