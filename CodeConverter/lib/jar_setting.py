@@ -3,8 +3,6 @@ jconn4.jar
 jtds-1.3.1.jar
 sqljdbc4.jar
 /cmot-service-euc/lib/activation.jar
-/cmot-service-euc/lib/cmot-swift-common.jar
-/cmot-service-euc/lib/cmot-tpc-common.jar
 /cmot-service-euc/lib/com.springsource.javax.activation-1.1.0.jar
 /cmot-service-euc/lib/com.springsource.javax.jms-1.1.0.jar
 /cmot-service-euc/lib/com.springsource.org.dom4j-1.6.1.jar
@@ -14,7 +12,6 @@ sqljdbc4.jar
 /cmot-service-euc/lib/commons-lang-2.6.jar
 /cmot-service-euc/lib/commons-logging-1.1.1.jar
 /cmot-service-euc/lib/commons-pool-1.5.5.jar
-/cmot-service-euc/lib/eaeUtil.jar
 /cmot-service-euc/lib/EccpressoFIPS.jar
 /cmot-service-euc/lib/EccpressoFIPSJca.jar
 /cmot-service-euc/lib/ehcache-1.1.jar
