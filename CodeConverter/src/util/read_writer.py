@@ -4,6 +4,8 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom as MD
 import os,gzip
 import generateDS
+import beautifulsoup
+import PyPdf2
 
 class JsonConverter(object):
 
@@ -35,22 +37,40 @@ class JsonParser(object):
 
 
 class XmlEntity(object):
-    def __init__(self):
+    def __init__(self,tag,attrib,text):
         
 class XmlParser(object):
     
     def __init__(self,_xmlname):
-        xml_tree=ET.parse(_xmlname)
+        self.xml_tree=ET.parse(_xmlname)
         self._root=xml_tree.getroot()
         
     def reset_xml_root(self,_xmlstring):
+        self.xml_tree=ET.parse(
         self._root=ET.fromstring(_xmlstring)
+        
+    def create_node(self,tag,attrib,text):
+        element=ET.Element(tag,attrib)
+        element.text=text
+        return element
+    
+    def add_node(self,parent,tag,attrib,text):
+        element=self.create_node(tag,attrib,text)
+        if parent:
+            parent.append(element)
+        
+    def find_elements(self,tags):
+        return self._root.findall(tags)
         
     def create_dict(self):
         dict_new={}
+        list_new=[]
+        for child in self._root:
+            dict_init={}
+            dict_init[child.tag]=[child.text,child.attrib]
         for key,value in enumerate(self._root):
             dict_init={}
-            list_init={}
+            list_init=[]
             for item in value:
                 list_init.append([item.tag,item.text])
                 for lists in list_init:
@@ -58,6 +78,13 @@ class XmlParser(object):
             dict_new[key]=dict_init
         return dict_new
     
+    def get_dict(self,element):
+        dict_temp={}
+        if len(element.getchildren()) == 0:
+            
+        for child in element:
+            
+        
     def dict_to_xml(self,input_dict,root_tag,node_tag):
         root_name = ET.Element(root_tag)
         for (k, v) in input_dict.items():
