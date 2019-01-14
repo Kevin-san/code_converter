@@ -1,5 +1,9 @@
 
 import json
+import xml.etree.ElementTree as ET
+import xml.dom.minidom as MD
+import os,gzip
+import generateDS
 
 class JsonConverter(object):
 
@@ -28,4 +32,49 @@ class JsonParser(object):
         result=json.load(file)
         file.close()
         return result
+
+
+class XmlEntity(object):
+    def __init__(self):
+        
+class XmlParser(object):
+    
+    def __init__(self,_xmlname):
+        xml_tree=ET.parse(_xmlname)
+        self._root=xml_tree.getroot()
+        
+    def reset_xml_root(self,_xmlstring):
+        self._root=ET.fromstring(_xmlstring)
+        
+    def create_dict(self):
+        dict_new={}
+        for key,value in enumerate(self._root):
+            dict_init={}
+            list_init={}
+            for item in value:
+                list_init.append([item.tag,item.text])
+                for lists in list_init:
+                    dict_init[lists[0]] = lists[1]
+            dict_new[key]=dict_init
+        return dict_new
+    
+    def dict_to_xml(self,input_dict,root_tag,node_tag):
+        root_name = ET.Element(root_tag)
+        for (k, v) in input_dict.items():
+            node_name = ET.SubElement(root_name, node_tag)
+            for key, val in sorted(v.items(),key=lambda e:e[0],reverse=True):
+                key = ET.SubElement(node_name, key)
+                key.text = val
+        return root_name
+    
+    def out_xml(self,root):
+        """格式化root转换为xml文件"""
+        rough_string = ET.tostring(root, 'utf-8')
+        reared_content = MD.parseString(rough_string)
+        with open(out_file, 'w+') as fs:
+            reared_content.writexml(fs, addindent=" ", newl="\n", encoding="utf-8")
+        return True
+
+        
+    
         
