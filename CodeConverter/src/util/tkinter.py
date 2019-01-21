@@ -1,3 +1,179 @@
+'''
+  2 2048GUI
+  3 '''
+  4 import tkinter
+  5 import random
+  6 
+  7 class Gui2048:
+  8     def __init__(self): # 显示窗体
+  9         self.data = [[0 for i in range(4)] for j in range(4)]
+ 10         self.scores = 0
+ 11         self.window = tkinter.Tk()
+ 12         self.window.title("2048")
+ 13 
+ 14         self.window.bind("<Key>", self.fangxiangEvent)
+ 15 
+ 16         self.canvasDa = tkinter.Canvas(self.window,
+ 17                                        width=400,
+ 18                                        height=400,
+ 19                                        bg="white")
+ 20         self.canvasDa.pack()
+ 21 
+ 22         frame = tkinter.Frame(self.window)
+ 23         frame.pack()
+ 24 
+ 25         self.buttonL = tkinter.Button(frame,
+ 26                                       text = "左",
+ 27                                       command = self.bleft).grid(row = 1, column = 1)
+ 28         self.buttonR = tkinter.Button(frame,
+ 29                                       text="右",
+ 30                                       command=self.bright).grid(row=1, column=2)
+ 31         self.buttonU = tkinter.Button(frame,
+ 32                                       text="上",
+ 33                                       command=self.bup).grid(row=1, column=3)
+ 34         self.buttonD = tkinter.Button(frame,
+ 35                                       text="下",
+ 36                                       command=self.bdown).grid(row=1, column=4)
+ 37         self.fenshu = tkinter.StringVar()
+ 38         tkinter.Label(frame,
+ 39                       textvariable = self.fenshu).grid(row=1, column = 5)
+ 40 
+ 41     def fangxiangEvent(self, event):
+ 42         if event.char == "w":
+ 43             self.bup()
+ 44         elif event.char == "s":
+ 45             self.bdown()
+ 46         elif event.char == "a":
+ 47             self.bleft()
+ 48         elif event.char == "d":
+ 49             self.bright()
+ 50 
+ 51     def myprint(self):   # 插入数据
+ 52         self.rand_num()
+ 53         self.fenshu.set(self.scores)
+ 54         for x, line in enumerate(self.data):
+ 55             print(line)
+ 56             for y, num in enumerate(line):
+ 57                 self.labelXiao = tkinter.Label(self.canvasDa,
+ 58                                                width=10,
+ 59                                                height=5,
+ 60                                                bg="white",
+ 61                                                text=num if num != 0 else "",
+ 62                                                font='Helvetica -20 bold')
+ 63                 self.labelXiao.grid(row=x + 1, column=y + 1)
+ 64         print("---------")
+ 65 
+ 66     def showit(self):  # 显示窗口
+ 67         self.window.mainloop()
+ 68 
+ 69     # 判断是否继续
+ 70     def wether_on(self):
+ 71         for i in range(4):
+ 72             x = y = 0
+ 73             for j in range(4):
+ 74                 if i <= 2 and j <= 2:
+ 75                     if self.data[i][j] == self.data[i+1][j] or self.data[i][j] == self.data[i][j+1] or self.data[3][3] == self.data[2][3] or self.data[3][3] == self.data[3][2]:
+ 76                         return True
+ 77         else:
+ 78             return False
+ 79 
+ 80     # 碰撞移动之后，随机选择空白位置，填充一个随机数2或4
+ 81     def rand_num(self):
+ 82         values = [2, 4]
+ 83         zero_pos = [[k, _k] for k, v in enumerate(self.data) for _k, _v in enumerate(v) if _v == 0]
+ 84         if not zero_pos:
+ 85             if self.wether_on():
+ 86                 return
+ 87             else:
+ 88                 self.fenshu.set("结束，得分" + str(self.scores))
+ 89         pos = random.choice(zero_pos)
+ 90         self.data[pos[0]][pos[1]] = random.choice(values)
+ 91 
+ 92     def bleft(self):
+ 93         for i in range(4):
+ 94             list_data = []
+ 95             for j in range(4):
+ 96                 temp = self.data[i][j]
+ 97                 if temp != 0:
+ 98                     if not list_data:
+ 99                         list_data.append([temp])
+100                     elif list_data[-1][0] == temp and len(list_data[-1]) == 1:
+101                         list_data[-1].append(temp)
+102                         self.scores += 2 * temp
+103                     else:
+104                         list_data.append([temp])
+105             list_data = [sum(k) for k in list_data]
+106             for z in range(4):
+107                 self.data[i][z] = 0
+108             for k, v in enumerate(list_data):
+109                 self.data[i][k] = v
+110         self.myprint()
+111 
+112     def bright(self):
+113         for i in range(4):
+114             list_data = []
+115             for j in range(4):
+116                 temp = self.data[i][j]
+117                 if temp != 0:
+118                     if not list_data:
+119                         list_data.append([temp])
+120                     elif list_data[-1][0] == temp and len(list_data[-1]) == 1:
+121                         list_data[-1].append(temp)
+122                         self.scores += 2 * temp
+123                     else:
+124                         list_data.append([temp])
+125             list_data = [sum(k) for k in list_data]
+126             for z in range(4):
+127                 self.data[i][z] = 0
+128             for m, n in enumerate(list_data):
+129                 self.data[i][4 - len(list_data) + m] = n
+130         self.myprint()
+131 
+132     def bup(self):
+133         for i in range(4):
+134             list_data = []
+135             for j in range(4):
+136                 temp = self.data[j][i]
+137                 if temp != 0:
+138                     if not list_data:
+139                         list_data.append([temp])
+140                     elif list_data[-1][0] == temp and len(list_data[-1]) == 1:
+141                         list_data[-1].append(temp)
+142                         self.scores += 2 * temp
+143                     else:
+144                         list_data.append([temp])
+145             list_data = [sum(k) for k in list_data]
+146             for z in range(4):
+147                 self.data[z][i] = 0
+148             for m, n in enumerate(list_data):
+149                 self.data[m][i] = n
+150         self.myprint()
+151 
+152     def bdown(self):
+153         for i in range(4):
+154             list_data = []
+155             for j in range(4):
+156                 temp = self.data[j][i]
+157                 if temp != 0:
+158                     if not list_data:
+159                         list_data.append([temp])
+160                     elif list_data[-1][0] == temp and len(list_data[-1]) == 1:
+161                         list_data[-1].append(temp)
+162                         self.scores += 2 * temp
+163                     else:
+164                         list_data.append([temp])
+165             list_data = [sum(k) for k in list_data]
+166             for z in range(4):
+167                 self.data[z][i] = 0
+168             for m, n in enumerate(list_data):
+169                 self.data[4 - len(list_data) + m][i] = n
+170         self.myprint()
+171 
+172 if __name__ == '__main__':
+173     GG = Gui2048()
+174     GG.myprint()
+175     GG.showit()
+============================================================================
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2018/5/9 下午1:36
