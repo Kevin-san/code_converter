@@ -262,3 +262,19 @@ class CodeUtils(object):
 		
 
 code_utils=CodeUtils()
+while True:
+    command = input('action:')
+    if hasattr(role_default, command):
+        command_act = getattr(role_default,command)
+        parameter_count = command_act.__code__.co_argcount
+　　 　　if parameter_count == 1: # self is also a parameter no need to input
+            command_act()
+        else:
+            v_list = []
+            for i in range(1,parameter_count):
+                parameter = input('Input Variable:')
+                v_list.append(parameter)
+            command_act(*v_list)
+
+    else:
+        print('Command not exists!')
